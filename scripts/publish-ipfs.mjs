@@ -34,8 +34,6 @@ for (const { abs, rel } of files) {
 
 // Optional niceties
 form.append('pinataMetadata', JSON.stringify({ name: 'mrcisme-site' }));
-// (Optional) also ask Pinata to wrap with a directory explicitly
-form.append('pinataOptions', JSON.stringify({ wrapWithDirectory: true }));
 
 const res = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
   method: 'POST',
