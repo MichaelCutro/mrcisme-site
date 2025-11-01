@@ -1,0 +1,42 @@
+name: Publish static site to IPFS
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ipfs-publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: main
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install deps
+        run: npm i -D pinata w3name dotenv
+
+      - name: Publish to IPFS & update IPNS
+        run: node scripts/publish-ipfs.mjs
+        env:
+          PINATA_JWT: ${{ secrets.PINATA_JWT }}
+          W3NAME_KEY_B64: ${{ secrets.W3NAME_KEY_B64 }}
+
+      - name: Upload publish info
+        uses: actions/upload-artifact@v4
+        with:
+          name: ipfs-publish-${{ github.sha }}
+          path: latest-ipfs.txt
+          if-no-files-found: ignore

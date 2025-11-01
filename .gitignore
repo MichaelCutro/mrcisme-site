@@ -1,0 +1,5 @@
+# .gitignore
+.env
+signing-key.txt
+latest-ipfs.txt
+node_modules/
