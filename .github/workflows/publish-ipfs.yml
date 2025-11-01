@@ -25,8 +25,12 @@ jobs:
         with:
           node-version: '20'
 
+      # If you committed package-lock.json:
       - name: Install deps
-        run: npm i -D pinata w3name dotenv
+        run: npm ci
+      # Otherwise, use:
+      # - name: Install deps
+      #   run: npm i
 
       - name: Publish to IPFS & update IPNS
         run: node scripts/publish-ipfs.mjs
